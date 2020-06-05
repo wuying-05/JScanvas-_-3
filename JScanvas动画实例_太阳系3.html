@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JScanvas动画实例_太阳系</title>
+
+<body>
+    <canvas id=canvas width="1400" height="1200" style="margin:0px auto;"></canvas>
+</body>
+
+<script type="text/javascript">
+    var i = 0;
+    //创建图片对象
+    var sun = new Image();
+    var earth = new Image();
+    var moon = new Image();
+    //初始化函数
+    function init() {
+        sun.src = "images/th12.jpg";
+        earth.src = "images/th13.jpg";
+        moon.src = "images/th14.jpg";
+        window.requestAnimationFrame(draw);//请求动画框架前调用draw
+    }
+    //画动画的函数
+    function draw() {
+        var canvas = document.getElementById("canvas").getContext('2d');//获取canvas对象并转变为获得2d上下文的canvas对象
+
+        /* canvas.globalCompositeOperation = 'destination-over';//新绘图与原图的覆盖方式为‘在源图像上方显示目标图像’。 */
+        canvas.fillStyle = "rgba(0,0,0,0.4)";
+        canvas.fillRect(0, 0, 1400, 1200);//清除画布中的图像
+        canvas.strokeStyle = "rgba(0,155,200,0.4)";
+        canvas.save();//保存初始状态
+
+        //earth
+        canvas.translate(800, 400);//1，移动坐标原点
+        if (i < 7200) {
+            canvas.rotate(2 * Math.PI / 3600 * i);//地球旋转
+        }
+        canvas.strokeStyle = "rgba(255,0,0,1)";
+        canvas.strokeRect(-1, -1, 2, 2);
+        canvas.translate(200, 0);//2，移动坐标原点
+        canvas.drawImage(earth, -15, -15, 30, 30);
+        // Moon
+        if (i < 7200) {
+            canvas.rotate(2 * Math.PI / 60 * i);//月球旋转
+        }
+        canvas.strokeStyle = "rgba(255,0,0)";
+        canvas.strokeRect(-1, -1, 2, 2);
+        i++;
+        canvas.drawImage(moon, 30, 0, 20, 20);
+
+        //sun
+        //放置太阳图片
+        canvas.restore();
+        canvas.restore();
+        canvas.drawImage(sun, 800 - 30, 400 - 30, 60, 60);
+        canvas.beginPath();
+        canvas.arc(800, 400, 200, 0, Math.PI * 2, false);
+        canvas.stroke();
+        if (i < 9999) {
+            window.requestAnimationFrame(draw);//请求动画框架前调用draw
+        }
+    }
+    init();
+</script>
+
+
+
+</head>
+
+
+
+</html>
